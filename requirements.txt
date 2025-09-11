@@ -1,0 +1,9 @@
+flask
+python-dotenv
+pandas  
+numpy
+requests
+alpaca-py
+sqlalchemy
+pytest
+pytest-flask
