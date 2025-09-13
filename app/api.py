@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from .services.market_data import get_latest_prices, get_prices
 from .utils.factors import compute_factors
+from .models.cache import get_or_update
 
 
 api_bp = Blueprint("api",__name__)
