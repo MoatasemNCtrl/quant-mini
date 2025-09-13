@@ -19,9 +19,18 @@ def prices(ticker):
     return jsonify({"ticker": ticker, "data": data})
 
     
-@api_bp.get("/factors/<ticker>")
-def factors(ticker):
-    data = get_prices(ticker, "8/10/2024", "8/15/2024")
-    return_type = request.args.get("as", "series")  # ?as=latest or ?as=series
-    result = compute_factors(data, return_type=return_type)
-    return jsonify(result)
+@api_bp.get("/factors/<symbol>")
+def factors(symbol):
+    timeframe = request.args.get("timeframe", "1Day")
+    start = request.args.get("start")
+    end = request.args.get("end")
+    return_type = request.args.get("as", "series")
+
+    kind = f"factors:{timeframe}:{start or 'None'}:{end or 'None'}:{return_type}"
+
+    def compute_fn():
+        prices = get_prices(symbol, timeframe=timeframe, start=start, end=end)
+        return compute_factors(prices, return_type=return_type)
+
+    data = get_or_update(symbol, kind, compute_fn)
+    return jsonify(data)
