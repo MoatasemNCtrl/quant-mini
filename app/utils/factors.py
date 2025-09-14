@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import math 
 
 
 
@@ -62,12 +63,22 @@ def compute_factors(data, return_type="series"):
 
     # series
     out = df[available].reset_index()
+    out = out.replace([np.inf, -np.inf], np.nan)
     out = out.where(pd.notnull(out), None)   # NaN -> None for JSON
     out["t"] = out["t"].astype(str)
 
     recs = out.to_dict(orient="records")
-    # cast NumPy scalars for safety
+    recs = out.to_dict(orient="records")
+
+# Replace all float('nan') and inf/-inf with None using regular Python
     cleaned = []
     for row in recs:
-        cleaned.append({k: (float(v) if isinstance(v, (np.floating,)) else v) for k, v in row.items()})
+        row2 = {}
+        for k, v in row.items():
+            if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
+                row2[k] = None
+            else:
+                row2[k] = v
+        cleaned.append(row2)
+
     return cleaned

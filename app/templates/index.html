@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>QuantMini — Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet" />
+  <!-- Chart.js (for the chart panel) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <h1>QuantMini — Research Tools & Dashboard</h1>
+  </header>
+
+  <main class="container">
+    <!-- Controls -->
+    <section class="controls">
+      <div class="field">
+        <label for="ticker">Ticker</label>
+        <input id="ticker" type="text" placeholder="e.g AAPL" autocomplete="off" />
+      </div>
+
+      <div class="field">
+        <label for="start">Start</label>
+        <input id="start" type="date" />
+      </div>
+
+      <div class="field">
+        <label for="end">End</label>
+        <input id="end" type="date" />
+      </div>
+
+      <div class="buttons">
+        <button id="btn-raw-prices" class="btn ghost" title="Open raw prices JSON in a new tab">
+          Raw Prices API
+        </button>
+
+        <button id="btn-factors-api" class="btn ghost" title="Open computed factors JSON (uses dates) in a new tab">
+          Factors API
+        </button>
+
+        <button id="btn-show-chart" class="btn primary" title="Plot Close over time using /api/factors">
+          Show Chart
+        </button>
+
+        <button id="btn-show-table" class="btn" title="Show full factors table using /api/factors">
+          Show Table
+        </button>
+      </div>
+    </section>
+
+    <!-- Status / errors -->
+    <section id="status" class="status" aria-live="polite"></section>
+
+    <!-- Panels -->
+    <section id="chart-panel" class="panel hidden">
+      <div class="panel-head">
+        <h2>Price Chart</h2>
+        <button class="linklike" data-collapse="#chart-panel">Hide</button>
+      </div>
+      <canvas id="priceChart" height="120"></canvas>
+    </section>
+
+    <section id="table-panel" class="panel hidden">
+      <div class="panel-head">
+        <h2>Factors Table</h2>
+        <button class="linklike" data-collapse="#table-panel">Hide</button>
+      </div>
+      <div class="table-wrap">
+        <table id="factors-table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Powered by your local Flask APIs</span>
+  </footer>
+
+  <script defer src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>
