@@ -1,4 +1,4 @@
-/* QuantMini Dashboard wiring (Pattern A: query-param driven) */
+
 
 (function () {
   const $ = (sel) => document.querySelector(sel);
